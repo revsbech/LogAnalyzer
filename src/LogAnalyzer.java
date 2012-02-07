@@ -11,7 +11,7 @@ import org.apache.hadoop.mapred.*;
 public class LogAnalyzer {
 		
 	public static void main(String[] args) throws Exception {
-		/*
+		
 		if(args.length != 2 ) {
 			System.err.println("Usage: LogAnalyzer <inputPath> <outputFile>");
 		}
@@ -26,8 +26,8 @@ public class LogAnalyzer {
 		conf.setOutputValueClass(IntWritable.class);
 		
 		JobClient.runJob(conf);
-		*/
-
+		/**/
+		/*
 		System.out.println("Hello World!");
 		String jsonTxt = readFile();
 		
