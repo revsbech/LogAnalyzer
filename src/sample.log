@@ -1,0 +1,1 @@
+{"@source":"file://snell//var/log/apache2/access.log","@type":"apache-access","@tags":[],"@fields":{},"@timestamp":"2012-02-06T19:42:30.469000Z","@source_host":"snell","@source_path":"//var/log/apache2/access.log","@message":"192.168.4.9 - - [06/Feb/2012:20:41:35 +0100] \"GET / HTTP/1.0\" 200 454 \"-\" \"check_http/v1861 (nagios-plugins 1.4.11)\""}
