@@ -6,26 +6,34 @@ import java.io.*;
  
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.*;
-import org.apache.hadoop.mapred.*;
+import org.apache.hadoop.mapreduce.*;
+import org.apache.hadoop.mapreduce.Mapper.*;
+import org.apache.hadoop.mapreduce.Reducer.*;
+import org.apache.hadoop.mapreduce.lib.input.*;
+import org.apache.hadoop.mapreduce.lib.output.*;
 
 public class LogAnalyzer {
-		
+	
 	public static void main(String[] args) throws Exception {
 		
 		if(args.length != 2 ) {
 			System.err.println("Usage: LogAnalyzer <inputPath> <outputFile>");
 		}
 		
-		JobConf conf = new JobConf("LogAnalyzer");
-		FileInputFormat.addInputPath(conf, new Path(args[0]));
-		FileOutputFormat.setOutputPath(conf, new Path(args[1]));
+		Job job = new Job();
+		job.setJarByClass(LogAnalyzer.class);
 		
-		conf.setMapperClass(CalculateBytesMapper.class);
-		conf.setReducerClass(CalculateBytesReducer.class);
-		conf.setOutputKeyClass(Text.class);
-		conf.setOutputValueClass(IntWritable.class);
+		FileInputFormat.addInputPath(job, new Path(args[0]));
+		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 		
-		JobClient.runJob(conf);
+		job.setMapperClass(CalculateBytesMapper.class);
+		job.setReducerClass(CalculateBytesReducer.class);
+		
+		job.setOutputKeyClass(Text.class);
+		job.setOutputValueClass(IntWritable.class);
+		
+		System.exit(job.waitForCompletion(true) ? 0 : 1);
+		
 		/**/
 		/*
 		System.out.println("Hello World!");
