@@ -2,5 +2,11 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/OSGi%Minimum-1.2"/>
+	<classpathentry kind="lib" path="classes/commons-io-2.1.jar"/>
+	<classpathentry kind="lib" path="classes/commons-lang3-3.1.jar"/>
+	<classpathentry kind="lib" path="classes/json_simple-1.1.jar"/>
+	<classpathentry kind="lib" path="classes/json-lib-2.4-jdk15.jar"/>
+	<classpathentry kind="lib" path="classes/junit-4.10.jar"/>
+	<classpathentry kind="lib" path="/opt/local/share/java/hadoop-0.20.203.0/hadoop-core-0.20.203.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
