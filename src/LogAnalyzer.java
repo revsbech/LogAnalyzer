@@ -43,7 +43,7 @@ public class LogAnalyzer {
 	}
 	
 	protected static String readFile() {
-		File file = new File("sample.log");
+		File file = new File("src/sample.log");
 		int ch;
 		StringBuffer strContent = new StringBuffer("");
 		FileInputStream fin = null;
