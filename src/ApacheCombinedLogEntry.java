@@ -18,6 +18,10 @@ public class ApacheCombinedLogEntry {
 		}
 	}
 	
+	public String getClientIp() {
+		return clientIp;
+	}
+	
 	public int getTotalBytes() {
 		return totalBytes;
 	}

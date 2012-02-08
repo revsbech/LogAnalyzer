@@ -14,7 +14,9 @@ public class CalculateBytesMapper extends Mapper<LongWritable, Text, Text, IntWr
 		logEntry.initFromJson(value.toString());
 		ApacheCombinedLogEntry apa = new ApacheCombinedLogEntry(logEntry.getData());
 		if(apa.getTotalBytes() > 0) {
-			context.write(new Text(logEntry.getSourcePath()), new IntWritable(apa.getTotalBytes()));
+			context.write(new Text(logEntry.getSource()), new IntWritable(apa.getTotalBytes()));
+			//context.write(new Text(apa.getClientIp()), new IntWritable(apa.getTotalBytes()));
+			
 		}
 	}
 	

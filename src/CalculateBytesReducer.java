@@ -10,11 +10,12 @@ import org.apache.hadoop.mapreduce.Reducer.Context;
 
 public class CalculateBytesReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
 	
-	public void reduce(Text key, Iterator<IntWritable> values, Context context) throws IOException, InterruptedException {
+	public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
 		int totalBytes = 0;
-		while (values.hasNext()) {
-			totalBytes += values.next().get();
+		for (IntWritable value : values) {
+			totalBytes += value.get();
 		}
 		context.write(key, new IntWritable(totalBytes));
 	}
+	
 }

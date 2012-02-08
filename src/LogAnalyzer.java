@@ -3,19 +3,22 @@ import java.io.IOException;
 import java.util.*;
 
 import java.io.*;
- 
+
+import org.apache.hadoop.conf.*;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.*;
+import org.apache.hadoop.io.Text.Comparator;	
 import org.apache.hadoop.mapreduce.*;
 import org.apache.hadoop.mapreduce.Mapper.*;
 import org.apache.hadoop.mapreduce.Reducer.*;
 import org.apache.hadoop.mapreduce.lib.input.*;
 import org.apache.hadoop.mapreduce.lib.output.*;
+import org.apache.hadoop.util.*;
 
-public class LogAnalyzer {
+
+public class LogAnalyzer extends Configured implements Tool {
 	
-	public static void main(String[] args) throws Exception {
-		
+	public int run(String[] args) throws Exception {
 		if(args.length != 2 ) {
 			System.err.println("Usage: LogAnalyzer <inputPath> <outputFile>");
 		}
@@ -28,11 +31,19 @@ public class LogAnalyzer {
 		
 		job.setMapperClass(CalculateBytesMapper.class);
 		job.setReducerClass(CalculateBytesReducer.class);
+		job.setNumReduceTasks(1);
 		
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(IntWritable.class);
+		//job.setOutputValueGroupingComparator(Comparator.class);
 		
-		System.exit(job.waitForCompletion(true) ? 0 : 1);
+		return (job.waitForCompletion(true) ? 0 : 1);
+	}
+	
+	public static void main(String[] args) throws Exception {
+		Configuration configuration = new Configuration();
+		int exitCode = ToolRunner.run(configuration, new LogAnalyzer(), args);
+		System.exit(exitCode);
 		
 		/**/
 		/*
