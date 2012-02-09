@@ -34,8 +34,8 @@ public class LogAnalyzer extends Configured implements Tool {
 		job.setNumReduceTasks(1);
 		
 		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(IntWritable.class);
-		//job.setOutputValueGroupingComparator(Comparator.class);
+		job.setOutputValueClass(LongWritable.class);
+		job.setMapOutputValueClass(IntWritable.class);
 		
 		return (job.waitForCompletion(true) ? 0 : 1);
 	}
