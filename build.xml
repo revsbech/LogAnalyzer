@@ -5,11 +5,15 @@
     <property name="jar.dir"     value="${build.dir}/jar"/>
     <property name="main-class"  value="LogAnalyzer"/>
     <property name="lib.dir"     value="lib"/>
-
+	<property name="hadoop.lib.dir" value="/opt/local/share/java/hadoop-0.20.203.0/" />
     <path id="classpath">
         <fileset dir="${lib.dir}" includes="**/*.jar">
-			
 		</fileset>
+        <fileset dir="${hadoop.lib.dir}" includes="**/*.jar">
+		</fileset>
+		
+		<!--<pathelement path="/opt/local/share/java/hadoop-0.20.203.0/hadoop-core-0.20.203.0.jar"/>-->
+		
     </path>
 
     <target name="clean">
@@ -36,7 +40,7 @@
     <target name="standalone-jar" depends="compile">
         <mkdir dir="${jar.dir}"/>
         <jar destfile="${jar.dir}/${ant.project.name}-standalone.jar" basedir="${classes.dir}">
-        	 <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
+        	<zipgroupfileset dir="${lib.dir}" includes="*.jar" />
             <manifest>
                 <attribute name="Main-Class" value="${main-class}"/>
             </manifest>
