@@ -30,7 +30,7 @@ public class LogAnalyzer extends Configured implements Tool {
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 		
 		job.setMapperClass(CalculateBytesMapper.class);
-		job.setReducerClass(CalculateBytesReducer.class);
+		job.setReducerClass(LongSumReducer.class);
 		job.setNumReduceTasks(1);
 		
 		job.setOutputKeyClass(Text.class);
@@ -44,37 +44,6 @@ public class LogAnalyzer extends Configured implements Tool {
 		Configuration configuration = new Configuration();
 		int exitCode = ToolRunner.run(configuration, new LogAnalyzer(), args);
 		System.exit(exitCode);
-		
-		/**/
-		/*
-		System.out.println("Hello World!");
-		String jsonTxt = readFile();
-		
-		
-		LogEntry le = new LogEntry();
-		le.initFromJson(jsonTxt);
-		System.out.println("TEST: " + le.getData());
-		
-		
-		ApacheCombinedLogEntry apa = new ApacheCombinedLogEntry(le.getData());
-		System.out.printf("TEST: %d", apa.getTotalBytes());
-	/**/	
-	}
-	
-	protected static String readFile() {
-		File file = new File("src/sample.log");
-		int ch;
-		StringBuffer strContent = new StringBuffer("");
-		FileInputStream fin = null;
-		try {
-		  fin = new FileInputStream(file);
-		  while ((ch = fin.read()) != -1)
-		    strContent.append((char) ch);
-		  fin.close();
-		} catch (Exception e) {
-		  System.out.println(e);
-		}		
-		return strContent.toString();
 	}
 	
 }
