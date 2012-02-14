@@ -19,17 +19,28 @@ import org.apache.hadoop.util.*;
 public class LogAnalyzer extends Configured implements Tool {
 	
 	public int run(String[] args) throws Exception {
-		if(args.length != 2 ) {
-			System.err.println("Usage: LogAnalyzer <inputPath> <outputFile>");
+		if(args.length != 3 ) {
+			this.printHelp();
+			System.exit(0);
 		}
 		
 		Job job = new Job();
 		job.setJarByClass(LogAnalyzer.class);
 		
-		FileInputFormat.addInputPath(job, new Path(args[0]));
-		FileOutputFormat.setOutputPath(job, new Path(args[1]));
+		FileInputFormat.addInputPath(job, new Path(args[1]));
+		FileOutputFormat.setOutputPath(job, new Path(args[2]));
 		
-		job.setMapperClass(CalculateBytesMapper.class);
+		if (args[0].equalsIgnoreCase("bytes")) {
+				job.setMapperClass(CalculateBytesMapper.class);
+		} else if (args[0].equalsIgnoreCase("browser")) {
+				job.setMapperClass(BrowserMapper.class);
+		} else {
+			System.out.println("Unknown option '" + args[2] + "' for argument <type>");
+			this.printHelp();
+			System.exit(0);
+		}
+		
+		
 		job.setReducerClass(LongSumReducer.class);
 		job.setNumReduceTasks(1);
 		
@@ -46,4 +57,9 @@ public class LogAnalyzer extends Configured implements Tool {
 		System.exit(exitCode);
 	}
 	
+	protected void printHelp() {
+		System.err.println("Usage: LogAnalyzer <type> <inputPath> <outputFile>");
+		System.err.println("");
+		System.err.println(" * type: bytes, browser");	
+	}
 }

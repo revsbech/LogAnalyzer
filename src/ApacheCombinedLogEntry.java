@@ -1,28 +1,61 @@
 import java.lang.Number;
 
-public class ApacheCombinedLogEntry {
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import nl.bitwalker.useragentutils.UserAgent;
 
-	private String clientIp;
-	private String user;
-	private String date;
-	private String statusCode;
-	private int totalBytes;
+public class ApacheCombinedLogEntry extends LogEntry {
+
+	protected String clientIp;
+	protected String user;
+	protected String date;
+	protected String statusCode;
+	protected int totalBytes;
+	protected UserAgent agent;
 	
-	public ApacheCombinedLogEntry(String data) {
-		String[] temp = data.split(" ");
-		clientIp = temp[0];
+	public boolean initFromJson(String jsonTxt) {
 		try {
-			totalBytes = Integer.parseInt(temp[9], 10);
-		} catch (NumberFormatException e) {
-			totalBytes = 0;
-		}
+			JSONParser parser=new JSONParser();
+			JSONObject obj = (JSONObject) parser.parse(jsonTxt);
+			source = obj.get("@source").toString();
+			type = obj.get("@type").toString();
+			timestamp = obj.get("@timestamp").toString();
+			sourceHost = obj.get("@source_host").toString();
+			sourcePath = obj.get("@source_path").toString();
+			data = obj.get("@message").toString();
+
+			JSONObject fields = (JSONObject)obj.get("@fields");
+			
+			JSONArray agentArray=(JSONArray)fields.get("agent");
+			agent = new UserAgent(agentArray.get(0).toString());
+			
+			JSONArray bytesArray=(JSONArray)fields.get("bytes");
+			totalBytes = Integer.parseInt(bytesArray.get(0).toString(), 10);
+			return true;
+		} catch (Exception e) {
+			System.err.println("Error when parsing Json into ApacheCombinedLogEntry");
+			return false;
+		}				
 	}
 	
+	/**
+	 * @return String
+	 */
 	public String getClientIp() {
 		return clientIp;
+	}
+	
+	/** 
+	 * @return UserAgent
+	 */
+	public UserAgent getUserAgent() {
+		return agent;
 	}
 	
 	public int getTotalBytes() {
 		return totalBytes;
 	}
+	
+	
 }

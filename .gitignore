@@ -1,1 +1,2 @@
 build/
+@hadoop_tmp_dir@
