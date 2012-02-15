@@ -1,5 +1,6 @@
 <project name="LogAnalyzer" basedir="." default="main">
     <property name="src.dir"     value="src"/>
+	<property name="test.dir"    value="test/"/>
     <property name="build.dir"   value="build"/>
     <property name="classes.dir" value="${build.dir}/classes"/>
     <property name="jar.dir"     value="${build.dir}/jar"/>
@@ -7,15 +8,16 @@
     <property name="lib.dir"     value="lib"/>
 	<property name="hadoop.lib.dir" value="/opt/local/share/java/hadoop-0.20.203.0/" />
     <path id="classpath">
-        <fileset dir="${lib.dir}" includes="**/*.jar">
-		</fileset>
-        <fileset dir="${hadoop.lib.dir}" includes="**/*.jar">
-		</fileset>
-		
-		<!--<pathelement path="/opt/local/share/java/hadoop-0.20.203.0/hadoop-core-0.20.203.0.jar"/>-->
-		
+		<fileset dir="${hadoop.lib.dir}" includes="**/*.jar"></fileset>
+		<pathelement location="${lib.dir}/json_simple-1.1.jar" />
+		<pathelement location="${lib.dir}/UserAgentUtils-1.5.jar" />
     </path>
-
+	<path id="classpath.test">
+		<pathelement location="${lib.dir}/junit.jar" />
+		<path refid="classpath" />
+		<pathelement location="${classes.dir}" />
+	</path>
+	
     <target name="clean">
         <delete dir="${build.dir}"/>
     </target>
@@ -26,6 +28,21 @@
         	<classpath refid="classpath"/>
 		</javac>
     </target>
+
+    <target name="compile-test">
+        <mkdir dir="${classes.dir}"/>
+        <javac includeantruntime="false" srcdir="${test.dir}" destdir="${classes.dir}" >
+        	<classpath refid="classpath.test"/>
+		</javac>
+    </target>
+
+	<target name="test" depends="compile-test">
+		<junit>
+			<classpath refid="classpath.test" />
+			<formatter type="brief" usefile="false" />
+			<test name="LogEntryTest" />
+		</junit>
+	</target>
 
     <target name="jar" depends="compile">
         <mkdir dir="${jar.dir}"/>
