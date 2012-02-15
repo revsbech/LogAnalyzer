@@ -1,3 +1,5 @@
+package net.moc.LogAnalyzer;
+
 import java.lang.Number;
 
 import org.json.simple.JSONObject;
@@ -5,7 +7,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import nl.bitwalker.useragentutils.UserAgent;
 
-public class ApacheCombinedLogEntry extends LogEntry {
+public class ApacheCombinedLogEntry extends ParsedJsonLogEntry implements ApacheCombinedLogEntryInterface {
 
 	protected String clientIp;
 	protected String user;
@@ -13,6 +15,7 @@ public class ApacheCombinedLogEntry extends LogEntry {
 	protected String statusCode;
 	protected int totalBytes;
 	protected UserAgent agent;
+	protected String requestPath;
 	
 	public boolean initFromJson(String jsonTxt) {
 		try {
@@ -24,6 +27,7 @@ public class ApacheCombinedLogEntry extends LogEntry {
 			sourceHost = obj.get("@source_host").toString();
 			sourcePath = obj.get("@source_path").toString();
 			data = obj.get("@message").toString();
+			
 
 			JSONObject fields = (JSONObject)obj.get("@fields");
 			
@@ -32,6 +36,10 @@ public class ApacheCombinedLogEntry extends LogEntry {
 			
 			JSONArray bytesArray=(JSONArray)fields.get("bytes");
 			totalBytes = Integer.parseInt(bytesArray.get(0).toString(), 10);
+			
+			JSONArray requestArray=(JSONArray)fields.get("request");
+			requestPath = requestArray.get(0).toString();
+			
 			return true;
 		} catch (Exception e) {
 			System.err.println("Error when parsing Json into ApacheCombinedLogEntry");
@@ -55,6 +63,10 @@ public class ApacheCombinedLogEntry extends LogEntry {
 	
 	public int getTotalBytes() {
 		return totalBytes;
+	}
+	
+	public String getRequestPath() {
+		return requestPath;
 	}
 	
 	

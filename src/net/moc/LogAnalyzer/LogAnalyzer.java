@@ -1,4 +1,6 @@
 
+package net.moc.LogAnalyzer;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -52,6 +54,8 @@ public class LogAnalyzer extends Configured implements Tool {
 	}
 	
 	public static void main(String[] args) throws Exception {
+		System.out.println("TEST");
+		System.exit(0);
 		Configuration configuration = new Configuration();
 		int exitCode = ToolRunner.run(configuration, new LogAnalyzer(), args);
 		System.exit(exitCode);

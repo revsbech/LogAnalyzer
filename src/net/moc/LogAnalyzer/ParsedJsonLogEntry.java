@@ -1,8 +1,10 @@
+package net.moc.LogAnalyzer;
+
 import java.io.IOException;
 import org.json.simple.parser.*;
 import org.json.simple.JSONObject;
 
-public class LogEntry {
+public class ParsedJsonLogEntry {
 	protected String source;
 	protected String sourceHost;
 	protected String sourcePath;

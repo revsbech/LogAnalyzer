@@ -1,3 +1,4 @@
+package net.moc.LogAnalyzer;
 import java.io.IOException;
 import java.util.*;
 import java.math.BigInteger;
