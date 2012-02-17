@@ -1,4 +1,4 @@
-package net.moc.LogAnalyzer;
+package net.moc.LogAnalyzer.Logstash;
 
 import java.lang.Number;
 
@@ -6,8 +6,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import nl.bitwalker.useragentutils.UserAgent;
+import net.moc.LogAnalyzer.*;
 
-public class ApacheCombinedLogEntry extends ParsedJsonLogEntry implements ApacheCombinedLogEntryInterface {
+public class ApacheCombinedParsedJsonLogEntry extends ParsedJsonLogEntry implements ApacheCombinedLogEntryInterface {
 
 	protected String clientIp;
 	protected String user;

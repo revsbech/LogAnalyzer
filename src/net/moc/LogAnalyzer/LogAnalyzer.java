@@ -18,6 +18,7 @@ import org.apache.hadoop.mapreduce.lib.output.*;
 import org.apache.hadoop.util.*;
 
 
+
 public class LogAnalyzer extends Configured implements Tool {
 	
 	public int run(String[] args) throws Exception {
@@ -54,8 +55,6 @@ public class LogAnalyzer extends Configured implements Tool {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		System.out.println("TEST");
-		System.exit(0);
 		Configuration configuration = new Configuration();
 		int exitCode = ToolRunner.run(configuration, new LogAnalyzer(), args);
 		System.exit(exitCode);

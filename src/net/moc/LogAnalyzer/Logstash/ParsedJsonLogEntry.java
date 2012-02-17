@@ -1,4 +1,4 @@
-package net.moc.LogAnalyzer;
+package net.moc.LogAnalyzer.Logstash	;
 
 import java.io.IOException;
 import org.json.simple.parser.*;
