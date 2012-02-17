@@ -7,6 +7,8 @@
     <property name="main-class"  value="net.moc.LogAnalyzer.LogAnalyzer"/>
     <property name="lib.dir"     value="lib"/>
 	<property name="hadoop.lib.dir" value="/opt/local/share/java/hadoop-0.20.203.0/" />
+	
+	<property name="output.dir" value="output"/>
     <path id="classpath">
 		<fileset dir="${hadoop.lib.dir}" includes="**/*.jar"></fileset>
 		<pathelement location="${lib.dir}/json_simple-1.1.jar" />
@@ -14,8 +16,8 @@
     </path>
 	<path id="classpath.test">
 		<pathelement location="${lib.dir}/junit.jar" />
-		<path refid="classpath" />
 		<pathelement location="${classes.dir}" />
+		<path refid="classpath" />
 	</path>
 	
     <target name="clean">
@@ -29,7 +31,7 @@
 		</javac>
     </target>
 
-    <target name="compile-test">
+    <target name="compile-test" depends="compile">
         <mkdir dir="${classes.dir}"/>
         <javac includeantruntime="false" srcdir="${test.dir}" destdir="${classes.dir}" >
         	<classpath refid="classpath.test"/>
@@ -40,7 +42,8 @@
 		<junit>
 			<classpath refid="classpath.test" />
 			<formatter type="brief" usefile="false" />
-			<test name="LogEntryTest" />
+			<test name="net.moc.LogAnalyzer.ApachCombinedRegexLogEntryTest" />
+			<test name="net.moc.LogAnalyzer.ApacheCombinedLogEntryFactoryTest" />
 		</junit>
 	</target>
 
@@ -55,7 +58,11 @@
     </target>
 
     <target name="run" depends="jar">
-        <java jar="${jar.dir}/${ant.project.name}.jar" fork="true">
+    	<delete dir="${output.dir}"/>
+        <java jar="${jar.dir}/${ant.project.name}.jar"  fork="true">
+        	<arg value="browser"/>
+			<arg value="res/access-sample.log"/>
+			<arg value="output"/>
             <classpath>
                 <path refid="classpath"/>
                 <path location="${jar.dir}/${ant.project.name}.jar"/>
