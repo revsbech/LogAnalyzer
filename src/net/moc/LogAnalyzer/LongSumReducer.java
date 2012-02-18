@@ -10,7 +10,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.Reducer.Context;
 
 
-public class LongSumReducer extends Reducer<Text, IntWritable, Text, LongWritable> {
+public class LongSumReducer extends Reducer<Text, LongWritable, Text, LongWritable> {
 	
 	/**
 	 * Simple sum up all the bytecounts in the Reducer input
@@ -20,9 +20,9 @@ public class LongSumReducer extends Reducer<Text, IntWritable, Text, LongWritabl
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
+	public void reduce(Text key, Iterable<LongWritable> values, Context context) throws IOException, InterruptedException {
 		long totalBytes = 0L;
-		for (IntWritable value : values) {
+		for (LongWritable value : values) {
 			totalBytes += (long)value.get();
 		}
 		context.write(key, new LongWritable(totalBytes));

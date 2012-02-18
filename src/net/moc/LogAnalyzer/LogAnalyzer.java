@@ -45,11 +45,12 @@ public class LogAnalyzer extends Configured implements Tool {
 		
 		
 		job.setReducerClass(LongSumReducer.class);
+		job.setCombinerClass(LongSumReducer.class);
 		job.setNumReduceTasks(1);
 		
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(LongWritable.class);
-		job.setMapOutputValueClass(IntWritable.class);
+		job.setMapOutputValueClass(LongWritable.class);
 		
 		return (job.waitForCompletion(true) ? 0 : 1);
 	}
