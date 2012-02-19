@@ -19,6 +19,7 @@ import org.apache.hadoop.util.*;
 
 
 
+
 public class LogAnalyzer extends Configured implements Tool {
 	
 	public int run(String[] args) throws Exception {
@@ -37,6 +38,8 @@ public class LogAnalyzer extends Configured implements Tool {
 				job.setMapperClass(CalculateBytesMapper.class);
 		} else if (args[0].equalsIgnoreCase("browser")) {
 				job.setMapperClass(BrowserMapper.class);
+		} else if (args[0].equalsIgnoreCase("geoip::country")) {
+			job.setMapperClass(GeoIpCountryMapper.class);				
 		} else {
 			System.out.println("Unknown option '" + args[2] + "' for argument <type>");
 			this.printHelp();
@@ -64,6 +67,6 @@ public class LogAnalyzer extends Configured implements Tool {
 	protected void printHelp() {
 		System.err.println("Usage: LogAnalyzer <type> <inputPath> <outputFile>");
 		System.err.println("");
-		System.err.println(" * type: bytes, browser");	
+		System.err.println(" * type: bytes, browser, geoip::country");	
 	}
 }

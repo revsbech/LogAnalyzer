@@ -9,20 +9,33 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Mapper.Context;
 import nl.bitwalker.useragentutils.*;
+import com.maxmind.geoip.*;
 
-
-
-public class BrowserMapper extends Mapper<LongWritable, Text, Text, LongWritable> {
+/*
+ * Class for mapping logentries to CountryCodes. 
+ */
+public class GeoIpCountryMapper extends Mapper<LongWritable, Text, Text, LongWritable> {
+	
+	LookupService cl;
+	
+	public GeoIpCountryMapper() {
+		try {
+			String dbfile =  LogAnalyzer.class.getResource("/res/GeoIP.dat").toString().substring(5);
+			cl = new LookupService(dbfile,LookupService.GEOIP_MEMORY_CACHE);
+		} catch (Exception e) {
+			System.err.println("Error opening GeoIP data file.");
+			System.err.println(e);
+			System.exit(2);
+		}
+	}
 	
 	public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 		try {
-				//@todo: Maybe we should try to see if this is really JSON encoded string or not. Perhaps some sort of factory
 			ApacheCombinedLogEntryInterface logEntry = ApacheCombinedLogEntryFactory.getLogEntryFromString(value.toString());
-			context.write(new Text(logEntry.getUserAgent().getBrowser().getName()) , new LongWritable(1));
+			context.write(new Text(cl.getCountry(logEntry.getClientIp()).getCode()) , new LongWritable(1));			
 		} catch ( Exception e) {
 			System.err.println("Error parsing logstash outpu");
 			context.write(new Text("Unknown (parse error in logentry") , new LongWritable(1));
 		}
 	}
-	
 }
