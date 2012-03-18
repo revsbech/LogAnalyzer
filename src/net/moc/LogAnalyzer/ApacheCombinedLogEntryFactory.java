@@ -11,9 +11,11 @@ public class ApacheCombinedLogEntryFactory {
 	 */
 	public static ApacheCombinedLogEntryInterface getLogEntryFromString(String value) {
 		try {
-			ParsedJsonLogEntry logstashEntry = new ParsedJsonLogEntry();
-			logstashEntry.initFromJson(value);
-			ApacheCombinedRegexLogEntry logEntry = new ApacheCombinedRegexLogEntry(logstashEntry.getData());
+			//ParsedJsonLogEntry logstashEntry = new ParsedJsonLogEntry();
+			//logstashEntry.initFromJson(value);			
+			//ApacheCombinedRegexLogEntry logEntry = new ApacheCombinedRegexLogEntry(logstashEntry.getData());
+			String[] temp = value.split("\t", 2);
+			ApacheCombinedRegexLogEntry logEntry = new ApacheCombinedRegexLogEntry(temp[1]);
 			return logEntry;
 		} catch (Exception e) {
 			return null;

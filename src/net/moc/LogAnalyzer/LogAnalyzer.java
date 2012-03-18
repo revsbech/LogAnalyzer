@@ -41,7 +41,7 @@ public class LogAnalyzer extends Configured implements Tool {
 		} else if (args[0].equalsIgnoreCase("geoip::country")) {
 			job.setMapperClass(GeoIpCountryMapper.class);				
 		} else {
-			System.out.println("Unknown option '" + args[2] + "' for argument <type>");
+			System.out.println("Unknown option '" + args[0] + "' for argument <type>");
 			this.printHelp();
 			System.exit(0);
 		}
