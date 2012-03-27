@@ -12,16 +12,18 @@ import nl.bitwalker.useragentutils.*;
 
 
 
-public class BrowserMapper extends Mapper<LongWritable, Text, Text, LongWritable> {
+public class BrowserMapper extends Mapper<LongWritable, Text, Text, LogEntryCount> {
 	
 	public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 		try {
 				//@todo: Maybe we should try to see if this is really JSON encoded string or not. Perhaps some sort of factory
 			ApacheCombinedLogEntryInterface logEntry = ApacheCombinedLogEntryFactory.getLogEntryFromString(value.toString());
-			context.write(new Text(logEntry.getUserAgent().getBrowser().getName()) , new LongWritable(1));
+			long bytes = (long)logEntry.getTotalBytes();
+			LogEntryCount count = new LogEntryCount(1L,bytes);
+			context.write(new Text(logEntry.getUserAgent().getBrowser().getName()) , count);
 		} catch ( Exception e) {
-			System.err.println("Error parsing logstash outpu");
-			context.write(new Text("Unknown (parse error in logentry") , new LongWritable(1));
+			System.err.println("Error parsing logstash output");
+			context.write(new Text("Unknown (parse error in logentry") , new LogEntryCount(1L,0L));
 		}
 	}
 	

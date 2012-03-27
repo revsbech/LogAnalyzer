@@ -45,6 +45,7 @@
 			<formatter type="brief" usefile="false" />
 			<test name="net.moc.LogAnalyzer.ApachCombinedRegexLogEntryTest" />
 			<test name="net.moc.LogAnalyzer.ApacheCombinedLogEntryFactoryTest" />
+			<test name="net.moc.LogAnalyzer.LogEntryCountTest" />
 		</junit>
 	</target>
 

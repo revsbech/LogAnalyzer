@@ -14,7 +14,7 @@ import com.maxmind.geoip.*;
 /*
  * Class for mapping logentries to CountryCodes. 
  */
-public class GeoIpCountryMapper extends Mapper<LongWritable, Text, Text, LongWritable> {
+public class GeoIpCountryMapper extends Mapper<LongWritable, Text, Text, LogEntryCount> {
 	
 	LookupService cl;
 	
@@ -32,10 +32,12 @@ public class GeoIpCountryMapper extends Mapper<LongWritable, Text, Text, LongWri
 	public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 		try {
 			ApacheCombinedLogEntryInterface logEntry = ApacheCombinedLogEntryFactory.getLogEntryFromString(value.toString());
-			context.write(new Text(cl.getCountry(logEntry.getClientIp()).getCode()) , new LongWritable(1));			
+			long bytes = (long)logEntry.getTotalBytes();
+			LogEntryCount count = new LogEntryCount(1L,bytes);
+			context.write(new Text(cl.getCountry(logEntry.getClientIp()).getCode()) , count);			
 		} catch ( Exception e) {
-			System.err.println("Error parsing logstash outpu");
-			context.write(new Text("Unknown (parse error in logentry") , new LongWritable(1));
+			System.err.println("Error parsing logstash output");
+			context.write(new Text("Unknown (parse error in logentry)") , new LogEntryCount(1,0));
 		}
 	}
 }
