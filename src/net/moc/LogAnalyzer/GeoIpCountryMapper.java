@@ -11,8 +11,15 @@ import org.apache.hadoop.mapreduce.Mapper.Context;
 import nl.bitwalker.useragentutils.*;
 import com.maxmind.geoip.*;
 
-/*
- * Class for mapping logentries to CountryCodes. 
+/**
+ * Class for mapping logentries to CountryCodes. the mapping is done using the
+ * MaxMind GeoIP database for translating IP adresses into countires.
+ * 
+ * The path to the GeoIP.dat datafile is currently hardcoded to be part of the jar file, but
+ * this seems not to work on all Hadoop installations.
+ * 
+ * @todo Refactor the path to the GeoIP datafile to be configurable.
+ * 
  */
 public class GeoIpCountryMapper extends Mapper<LongWritable, Text, Text, LogEntryCount> {
 	

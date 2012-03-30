@@ -17,9 +17,6 @@ import org.apache.hadoop.mapreduce.lib.input.*;
 import org.apache.hadoop.mapreduce.lib.output.*;
 import org.apache.hadoop.util.*;
 
-
-
-
 public class LogAnalyzer extends Configured implements Tool {
 	
 	public int run(String[] args) throws Exception {
@@ -34,16 +31,14 @@ public class LogAnalyzer extends Configured implements Tool {
 		FileInputFormat.addInputPath(job, new Path(args[1]));
 		FileOutputFormat.setOutputPath(job, new Path(args[2]));
 		
-		if (args[0].equalsIgnoreCase("bytes")) {
-				job.setMapperClass(CalculateBytesMapper.class);
-		} else if (args[0].equalsIgnoreCase("browser")) {
+		if (args[0].equalsIgnoreCase("browser")) {
 				job.setMapperClass(BrowserMapper.class);
 		} else if (args[0].equalsIgnoreCase("geoip::country")) {
 			job.setMapperClass(GeoIpCountryMapper.class);				
 		} else {
 			System.out.println("Unknown option '" + args[0] + "' for argument <type>");
 			this.printHelp();
-			System.exit(0);
+			System.exit(1);
 		}
 		
 		job.setReducerClass(LogEntryCountSumReducer.class);
@@ -66,6 +61,6 @@ public class LogAnalyzer extends Configured implements Tool {
 	protected void printHelp() {
 		System.err.println("Usage: LogAnalyzer <type> <inputPath> <outputFile>");
 		System.err.println("");
-		System.err.println(" * type: bytes, browser, geoip::country");	
+		System.err.println(" * type: browser, geoip::country");	
 	}
 }

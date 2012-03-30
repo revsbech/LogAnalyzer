@@ -3,6 +3,12 @@ package net.moc.LogAnalyzer;
 import java.util.regex.*;
 import nl.bitwalker.useragentutils.*;
 
+/**
+ * Parse an Apache combined log entry using a regular expression.
+ * 
+ * @author revsbech
+ *
+ */
 public class ApacheCombinedRegexLogEntry implements ApacheCombinedLogEntryInterface {
 	
 	protected String ip;
@@ -30,9 +36,7 @@ public class ApacheCombinedRegexLogEntry implements ApacheCombinedLogEntryInterf
 			requestPath = items[1];
 		} else {
 			throw new Exception("Error matching!");
-			//System.err.println("Error matching!");
 		}
-		
 	}
 	
 	public String getClientIp() {
